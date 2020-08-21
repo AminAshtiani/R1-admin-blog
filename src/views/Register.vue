@@ -14,7 +14,7 @@
             <b-row>
                 <b-col md="4" offset-md="4">
                     <b-jumbotron style="padding: 2rem 2rem">
-                        <h1>LOGIN</h1>
+                        <h1>REGISTER</h1>
                         <b-form @submit.prevent="onSubmit">
                             <b-form-group
                                 id="input-group-1"
@@ -24,9 +24,9 @@
                             >
                                 <b-form-input
                                     id="input-1"
-                                    v-model="form.email"
-                                    type="email"
-                                    :state="validateState('email')"
+                                    v-model="form.username"
+                                    type="text"
+                                    :state="validateState('username')"
                                     placeholder="Enter email"
                                     aria-describedby="input-1-live-feedback"
                                 ></b-form-input>
@@ -36,25 +36,43 @@
                             </b-form-group>
                             <b-form-group
                                 id="input-group-2"
-                                label="Password:"
+                                label="Email:"
                                 label-for="input-2"
                                 class="text-left"
                             >
                                 <b-form-input
                                     id="input-2"
-                                    v-model="form.password"
-                                    type="password"
-                                    :state="validateState('password')"
-                                    placeholder="Enter password"
+                                    v-model="form.email"
+                                    type="email"
+                                    :state="validateState('email')"
+                                    placeholder="Enter email"
                                     aria-describedby="input-2-live-feedback"
                                 ></b-form-input>
                                 <b-form-invalid-feedback id="input-2-live-feedback">
                                     required field.
                                 </b-form-invalid-feedback>
                             </b-form-group>
+                            <b-form-group
+                                id="input-group-3"
+                                label="Password:"
+                                label-for="input-3"
+                                class="text-left"
+                            >
+                                <b-form-input
+                                    id="input-3"
+                                    v-model="form.password"
+                                    type="password"
+                                    :state="validateState('password')"
+                                    placeholder="Enter password"
+                                    aria-describedby="input-3-live-feedback"
+                                ></b-form-input>
+                                <b-form-invalid-feedback id="input-3-live-feedback">
+                                    required field.
+                                </b-form-invalid-feedback>
+                            </b-form-group>
                             <b-button type="submit" variant="primary" style="width: 100%">Submit</b-button>
                         </b-form>
-                        <p>Don't have account? <router-link to="/register"><b>Register</b></router-link></p>
+                        <p>Already have account? <router-link to="/login"><b>Login</b></router-link></p>
                     </b-jumbotron>
                 </b-col>
             </b-row>
@@ -76,7 +94,6 @@ import {
     BToast
 } from 'bootstrap-vue'
 import { required } from 'vuelidate/lib/validators';
-
 export default {
     name: 'Login',
     components: {
@@ -95,6 +112,7 @@ export default {
         return {
             showTop: false,
             form: {
+                username: "",
                 email: "",
                 password: "",
             }
@@ -122,10 +140,12 @@ export default {
             },
             password: {
                 required
+            },
+            username: {
+                required
             }
         }
     },
-    
 }
 </script>
 <style scoped>

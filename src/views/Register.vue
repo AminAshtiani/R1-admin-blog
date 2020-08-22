@@ -18,7 +18,7 @@
                         <b-form @submit.prevent="onSubmit">
                             <b-form-group
                                 id="input-group-1"
-                                label="Email:"
+                                label="Username:"
                                 label-for="input-1"
                                 class="text-left"
                             >
@@ -27,7 +27,7 @@
                                     v-model="form.username"
                                     type="text"
                                     :state="validateState('username')"
-                                    placeholder="Enter email"
+                                    placeholder="Enter username"
                                     aria-describedby="input-1-live-feedback"
                                 ></b-form-input>
                                 <b-form-invalid-feedback id="input-1-live-feedback">
@@ -124,7 +124,14 @@ export default {
             if (this.$v.form.$anyError) {
                 return;
             }
-
+            let data = {
+                username: this.form.username,
+                email: this.form.email,
+                password: this.form.password,
+            }
+            this.$store.dispatch('register', data)
+                .then(() => this.$router.push('/'))
+                .catch(err => console.log(err))
             alert("Form submitted!");
             this.showTop = true
         },

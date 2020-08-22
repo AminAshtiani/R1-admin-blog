@@ -106,9 +106,14 @@ export default {
             if (this.$v.form.$anyError) {
                 return;
             }
-
-            alert("Form submitted!");
-            this.showTop = true
+            const email = this.form.email;
+            const password = this.form.password;
+            this.$store.dispatch('login', { email, password })
+                .then(() => {
+                    this.showTop = true;
+                    this.$router.push('/admin')
+                })
+                .catch(err => console.log(err))        
         },
         validateState(name) {
             const { $dirty, $error } = this.$v.form[name];

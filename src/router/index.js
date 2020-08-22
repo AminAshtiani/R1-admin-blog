@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store';
 import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
@@ -27,6 +28,23 @@ Vue.use(VueRouter)
     path: '/register',
     name: 'Register',
     component: () => import(/* webpackChunkName: "login" */ '../views/Register.vue'),
+  },
+  {
+    path: '/admin',
+    name: 'List',
+    exact: true,
+    component: () => import(/* webpackChunkName: "list" */ '../views/List.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/admin/create',
+    name: 'Create',
+    component: () => import(/* webpackChunkName: "create" */ '../views/Create.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 

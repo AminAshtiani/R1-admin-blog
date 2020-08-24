@@ -1,16 +1,6 @@
 <template>
   <div class="login">
     <b-container>
-      <b-alert
-        v-model="showTop"
-        class="position-fixed fixed-top m-0 rounded-0"
-        style="z-index: 2000;"
-        variant="success"
-        @dismissed="showTop = false"
-        dismissible
-      >
-        Fixed position (top) alert!
-      </b-alert>
       <b-row>
         <b-col md="4" offset-md="4">
           <b-jumbotron style="padding: 2rem 2rem">
@@ -115,7 +105,6 @@ export default {
   },
   data() {
     return {
-      showTop: false,
       form: {
         username: "",
         email: "",
@@ -137,9 +126,13 @@ export default {
       this.$store
         .dispatch("register", data)
         .then(() => this.$router.push("/"))
-        .catch((err) => console.log(err));
-      alert("Form submitted!");
-      this.showTop = true;
+        .catch((err) => {
+          this.$bvToast.toast(`${err.message}`, {
+            variant: 'danger',
+            title: 'Error',
+            autoHideDelay: 5000,
+          })
+        });
     },
     validateState(name) {
       const { $dirty, $error } = this.$v.form[name];

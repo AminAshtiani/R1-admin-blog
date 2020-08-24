@@ -140,9 +140,20 @@ export default {
       this.$store
         .dispatch("updateArticle", { body, slug })
         .then(() => {
+          this.$bvToast.toast(`<b>Well Done</b> Article updated successfully`, {
+            variant: 'success',
+            title: 'Error',
+            autoHideDelay: 5000,
+          })
           this.$router.push("/admin");
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          this.$bvToast.toast(`${err.message}`, {
+            variant: 'danger',
+            title: 'Error',
+            autoHideDelay: 5000,
+          })
+        });
     },
     validateState(name) {
       const { $dirty, $error } = this.$v.form[name];

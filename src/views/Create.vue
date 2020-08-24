@@ -131,9 +131,19 @@ export default {
       this.$store
         .dispatch("createArticle", { article: this.form })
         .then(() => {
+          this.$bvToast.toast(`<b>Well Done</b> Article created successfully`, {
+            variant: 'success',
+            autoHideDelay: 5000,
+          })
           this.$router.push("/admin");
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          this.$bvToast.toast(`${err.message}`, {
+            variant: 'danger',
+            title: 'Error',
+            autoHideDelay: 5000,
+          })
+        });
     },
     validateState(name) {
       const { $dirty, $error } = this.$v.form[name];

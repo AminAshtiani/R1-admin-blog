@@ -111,8 +111,8 @@ export default {
     }),
   },
   methods: {
-    fetchData(offset) {
-      this.$store.dispatch("getArticles", (this.perPage * (offset - 1))).then(res => {
+    fetchData(page) {
+      this.$store.dispatch("getArticles", (this.perPage * (page - 1))).then(res => {
         this.rows = res.data.articlesCount
       });
     },

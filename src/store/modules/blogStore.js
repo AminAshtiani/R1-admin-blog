@@ -66,7 +66,6 @@ const mutations = {
     state.status = "loading";
   },
   create_success(state, payload) {
-    console.log(payload)
     state.status = ""
   },
   create_error(state) {
@@ -124,7 +123,6 @@ const actions = {
     })
   },
   createArticle({commit}, {article}) {
-    console.log(article)
     return new Promise((resolve, reject) => {
       commit('create_article_request')
       Axios({

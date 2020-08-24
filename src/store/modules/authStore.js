@@ -45,7 +45,6 @@ const actions = {
             email,
             username,
           };
-          console.log(respUser)
           localStorage.setItem("token", token);
           Axios.defaults.headers.common["Authorization"] = `Token ${token}`;
           commit("auth_success", {token, user: respUser});

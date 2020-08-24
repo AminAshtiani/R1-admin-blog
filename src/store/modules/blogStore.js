@@ -84,11 +84,11 @@ const mutations = {
 };
 
 const actions = {
-  getArticles({ commit }) {
+  getArticles({ commit }, offset=0) {
     return new Promise((resolve, reject) => {
         commit("articles_request");
         Axios({
-            url: "http://localhost:3000/api/articles",
+            url: `http://localhost:3000/api/articles?offset=${offset}&&limit=5`,
             method: 'GET',
         }).then(res => {
             const { data: {articles, articlesCount}} = res;

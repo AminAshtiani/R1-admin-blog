@@ -36,6 +36,16 @@
           </b-dropdown>
         </template>
       </b-table>
+      <b-pagination
+        class="pagination"
+        v-if="rows > 0"
+        v-model="currentPage"
+        :total-rows="rows"
+        :per-page="perPage"
+        prev-text="Prev"
+        next-text="Next"
+        @input="fetchData(currentPage)"
+      ></b-pagination>
       <!-- create a modal -->
       <b-modal id="modal-1" title="Delete Article" centered>
         <p class="my-4">Are you sure to delete Article?</p>
@@ -87,10 +97,13 @@ export default {
         "actions",
       ],
       selectedPost: null,
+      rows: 0,
+      perPage: 5,
+      currentPage: 1
     };
   },
   mounted() {
-    this.$store.dispatch("getArticles");
+    this.fetchData(this.currentPage)
   },
   computed: {
     ...mapGetters({
@@ -98,6 +111,11 @@ export default {
     }),
   },
   methods: {
+    fetchData(offset) {
+      this.$store.dispatch("getArticles", (this.perPage * (offset - 1))).then(res => {
+        this.rows = res.data.articlesCount
+      });
+    },
     moment: function() {
       return moment();
     },
@@ -128,3 +146,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+  .pagination {
+    justify-content: center;
+  }
+</style>

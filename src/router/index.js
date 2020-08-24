@@ -45,6 +45,14 @@ Vue.use(VueRouter)
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: '/admin/edit/:slug',
+    name: 'Edit',
+    component: () => import(/* webpackChunkName: "create" */ '../views/Edit.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 

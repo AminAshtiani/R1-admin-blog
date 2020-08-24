@@ -10,11 +10,10 @@ const mutations = {
   auth_request(state) {
     state.status = "loading";
   },
-  auth_success(state, {token, user}) {
-      console.log(user)
+  auth_success(state, payload) {
     state.status = "success";
-    state.token = token;
-    state.user = user;
+    state.token = payload.token;
+    state.user = payload.user;
   },
   auth_error(state) {
     state.status = "error";
@@ -46,9 +45,10 @@ const actions = {
             email,
             username,
           };
+          console.log(respUser)
           localStorage.setItem("token", token);
           Axios.defaults.headers.common["Authorization"] = `Token ${token}`;
-          commit("auth_success", {token, respUser});
+          commit("auth_success", {token, user: respUser});
           resolve(resp);
         })
         .catch((err) => {
@@ -94,7 +94,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       commit("logout");
       localStorage.removeItem("token");
-      delete axios.defaults.headers.common["Authorization"];
+      delete Axios.defaults.headers.common["Authorization"];
       resolve();
     });
   },

@@ -68,7 +68,7 @@
                 id="input-4"
                 v-model="form.tag"
                 type="text"
-                placeholder="Enter tags(Comma seprated): "
+                placeholder="Enter tags"
                 aria-describedby="input-4-live-feedback"
               ></b-form-input>
               <b-form-invalid-feedback id="input-4-live-feedback">
@@ -107,16 +107,25 @@ export default {
         title: "",
         body: "",
         description: "",
-        tagList: [],
+        tagList: "",
         tag: "",
       },
     };
   },
   mounted() {
+    const slug = this.$router.history.current.params.slug;
+    this.$store.dispatch("getArticleBySlug", slug).then((resp) => {
+
+      this.form.title = this.$store.state.BlogStore.selectedArticle.title;
+      this.form.body = this.$store.state.BlogStore.selectedArticle.body;
+      this.form.description = this.$store.state.BlogStore.selectedArticle.description;
+      this.form.tagList = this.$store.state.BlogStore.selectedArticle.tagList;
+    });
     this.$store.dispatch("getTags");
   },
   computed: {
     ...mapGetters({
+      article: "getArticleBySlug",
       tags: "getTags",
     }),
   },
@@ -126,10 +135,10 @@ export default {
       if (this.$v.form.$anyError) {
         return;
       }
-      const newTag = this.form.tag.split(",");
-      this.form.tagList = [...this.form.tagList, ...newTag];
+      const body = this.form.body;
+      const slug = this.$router.history.current.params.slug;
       this.$store
-        .dispatch("createArticle", { article: this.form })
+        .dispatch("updateArticle", { body, slug })
         .then(() => {
           this.$router.push("/admin");
         })

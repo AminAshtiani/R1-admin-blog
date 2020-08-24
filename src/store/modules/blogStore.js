@@ -18,6 +18,16 @@ const mutations = {
   create_article_error(state) {
     state.status = 'error'
   },
+  delete_article_request(state) {
+    state.status = 'loading'
+  },
+  delete_article_success(state, payload) {
+    state.status = 'success'
+    state.articles = state.articles.filter(article => article.slug !== payload.slug)
+  },
+  delete_article_error(state) {
+    state.status = 'error'
+  },
   update_article_request(state) {
     state.status = 'loading'
   },
@@ -156,6 +166,21 @@ const actions = {
         resolve(res)
       }).catch(err => {
         commit('create_article_error');
+        reject(err);
+      })
+    })
+  },
+  deleteArticle({commit}, {slug}) {
+    return new Promise((resolve, reject) => {
+      commit('delete_article_request')
+      Axios({
+        url: `http://localhost:3000/api/articles/${slug}`,
+        method: 'DELETE',
+      }).then(res => {
+        commit('delete_article_success', { slug });
+        resolve(res)
+      }).catch(err => {
+        commit('delete_article_error');
         reject(err);
       })
     })

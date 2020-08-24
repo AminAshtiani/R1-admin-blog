@@ -106,8 +106,24 @@ export default {
       this.$bvModal.show("modal-1");
     },
     confirmDelete() {
+      const slug = this.selectedPost
+      this.$store.dispatch('deleteArticle', { slug }).then(res => {
+        console.log(res)
+        this.$bvToast.toast(`The Article was deleted successfully`, {
+            variant: 'success',
+            title: 'Delete',
+            autoHideDelay: 5000,
+          })
+      }).catch(err => {
+        this.$bvToast.toast(`${err.message}`, {
+            variant: 'danger',
+            title: 'Delete',
+            autoHideDelay: 5000,
+          })
+      })
       this.selectedPost = "";
       this.$bvModal.hide("modal-1");
+      
     },
   },
 };

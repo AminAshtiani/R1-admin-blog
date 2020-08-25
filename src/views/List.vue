@@ -23,7 +23,7 @@
           {{ data.value.substring(0, 20) }}
         </template>
         <template v-slot:cell(createdAt)="data">
-          {{ moment(data.value).format("DD MMMM, YYYY") }}
+          {{ data.value | dateFormat }}
         </template>
         <template v-slot:cell(actions)="row">
           <b-dropdown right split text="..." variant="info">
@@ -110,14 +110,16 @@ export default {
       articles: "getArticles",
     }),
   },
+  filters: {
+    dateFormat(date) {
+      return moment(date).format("DD MMMM, YYYY")
+    }
+  },
   methods: {
     fetchData(page) {
       this.$store.dispatch("getArticles", (this.perPage * (page - 1))).then(res => {
         this.rows = res.data.articlesCount
       });
-    },
-    moment: function() {
-      return moment();
     },
     deleteItem: function(slug) {
       this.selectedPost = slug;

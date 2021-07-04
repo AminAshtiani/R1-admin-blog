@@ -1,168 +1,41 @@
 <template>
   <div class="admin">
     <layout>
-      <b-form @submit.prevent="submit">
-        <b-row>
-          <b-col cols="12" sm="12" md="6">
-            <b-form-group
-              id="input-group-1"
-              label="Title:"
-              label-for="input-1"
-              class="text-left"
-            >
-              <b-form-input
-                id="input-1"
-                v-model="form.title"
-                type="text"
-                placeholder="Title"
-                :state="validateState('title')"
-                aria-describedby="input-1-live-feedback"
-              ></b-form-input>
-              <b-form-invalid-feedback id="input-1-live-feedback">
-                required field.
-              </b-form-invalid-feedback>
-            </b-form-group>
-            <b-form-group
-              id="input-group-2"
-              label="Description:"
-              label-for="input-2"
-              class="text-left"
-            >
-              <b-form-input
-                id="input-2"
-                v-model="form.description"
-                type="text"
-                placeholder="Description"
-                :state="validateState('description')"
-                aria-describedby="input-2-live-feedback"
-              ></b-form-input>
-              <b-form-invalid-feedback id="input-2-live-feedback">
-                required field.
-              </b-form-invalid-feedback>
-            </b-form-group>
-            <b-form-group
-              id="input-group-3"
-              label="Body:"
-              label-for="input-3"
-              class="text-left"
-            >
-              <b-form-textarea
-                v-model="form.body"
-                id="input-3"
-                :state="validateState('body')"
-                aria-describedby="input-3-live-feedback"
-              ></b-form-textarea>
-              <b-form-invalid-feedback id="input-3-live-feedback">
-                required field.
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </b-col>
-          <b-col cols="12" sm="12" md="3">
-            <b-form-group
-              id="input-group-4"
-              label="Tags:"
-              label-for="input-4"
-              class="text-left"
-            >
-              <b-form-input
-                id="input-4"
-                v-model="form.tag"
-                type="text"
-                placeholder="Enter tags(Comma seprated): "
-                aria-describedby="input-4-live-feedback"
-              ></b-form-input>
-              <b-form-invalid-feedback id="input-4-live-feedback">
-                required field.
-              </b-form-invalid-feedback>
-            </b-form-group>
-            <b-form-group class="tags">
-              <b-form-checkbox-group
-                v-model="form.tagList"
-                :options="tags"
-                plain
-                stacked
-              ></b-form-checkbox-group>
-            </b-form-group>
-          </b-col>
-        </b-row>
-        <b-button type="submit" variant="primary" style="float: left"
-          >Submit</b-button
-        >
-      </b-form>
+      <BlogPost @on-submit="submit"/>
     </layout>
   </div>
 </template>
 <script>
 import Layout from "@/components/Layout";
+import BlogPost from "@/components/BlogPostForm";
 import { mapGetters } from "vuex";
 import { required } from "vuelidate/lib/validators";
 export default {
   name: "Create",
   components: {
     Layout,
-  },
-  data() {
-    return {
-      form: {
-        title: "",
-        body: "",
-        description: "",
-        tagList: [],
-        tag: "",
-      },
-    };
-  },
-  mounted() {
-    this.$store.dispatch("getTags");
-  },
-  computed: {
-    ...mapGetters({
-      tags: "getTags",
-    }),
+    BlogPost,
   },
   methods: {
     submit(evt) {
-      this.$v.form.$touch();
-      if (this.$v.form.$anyError) {
-        return;
-      }
-      const newTag = this.form.tag.split(",");
-      this.form.tagList = [...this.form.tagList, ...newTag];
       this.$store
-        .dispatch("createArticle", { article: this.form })
+        .dispatch("createArticle", { article: evt })
         .then(() => {
           this.$bvToast.toast(`<b>Well Done</b> Article created successfully`, {
-            variant: 'success',
+            variant: "success",
             autoHideDelay: 5000,
-          })
+          });
           this.$router.push("/admin");
         })
         .catch((err) => {
           this.$bvToast.toast(`${err.message}`, {
-            variant: 'danger',
-            title: 'Error',
+            variant: "danger",
+            title: "Error",
             autoHideDelay: 5000,
-          })
+          });
         });
     },
-    validateState(name) {
-      const { $dirty, $error } = this.$v.form[name];
-      return $dirty ? !$error : null;
-    },
-  },
-  validations: {
-    form: {
-      title: {
-        required,
-      },
-      body: {
-        required,
-      },
-      description: {
-        required,
-      },
-    },
-  },
+  }
 };
 </script>
 <style scoped>

@@ -29,7 +29,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       commit("auth_request");
       Axios({
-        url: "http://localhost:3000/api/users/login",
+        url: `${process.env.VUE_APP_BASE_URL}/users/login`,
         method: "POST",
         data: {
           user,
@@ -61,7 +61,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       commit("auth_request");
       Axios({
-        url: "http://localhost:3000/api/users",
+        url: `${process.env.VUE_APP_BASE_URL}/users`,
         method: "POST",
         data: {
           user,

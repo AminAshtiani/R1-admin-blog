@@ -88,7 +88,7 @@ const actions = {
     return new Promise((resolve, reject) => {
         commit("articles_request");
         Axios({
-            url: `http://localhost:3000/api/articles?offset=${offset}&&limit=5`,
+            url: `${process.env.VUE_APP_BASE_URL}/articles?offset=${offset}&&limit=5`,
             method: 'GET',
         }).then(res => {
             const { data: {articles, articlesCount}} = res;
@@ -104,7 +104,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       commit('article_by_slug_request')
       Axios({
-        url: `http://localhost:3000/api/articles/${slug}`,
+        url: `${process.env.VUE_APP_BASE_URL}/articles/${slug}`,
         method: 'GET',
       }).then(res => {
         const { article : { body, description, title, tagList }} = res.data
@@ -120,7 +120,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       commit('tags_request')
       Axios({
-        url: `http://localhost:3000/api/tags`,
+        url: `${process.env.VUE_APP_BASE_URL}/tags`,
         method: 'GET',
       }).then(res => {
         const { tags } = res.data
@@ -136,7 +136,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       commit('create_article_request')
       Axios({
-        url: `http://localhost:3000/api/articles/`,
+        url: `${process.env.VUE_APP_BASE_URL}/articles/`,
         method: 'POST',
         data: {
           article
@@ -154,7 +154,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       commit('create_article_request')
       Axios({
-        url: `http://localhost:3000/api/articles/${slug}`,
+        url: `${process.env.VUE_APP_BASE_URL}/articles/${slug}`,
         method: 'PUT',
         data: {
           article: {
@@ -174,7 +174,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       commit('delete_article_request')
       Axios({
-        url: `http://localhost:3000/api/articles/${slug}`,
+        url: `${process.env.VUE_APP_BASE_URL}/articles/${slug}`,
         method: 'DELETE',
       }).then(res => {
         commit('delete_article_success', { slug });
